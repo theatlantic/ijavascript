@@ -45,7 +45,7 @@ var util = require("util");
 var uuid = require("node-uuid");
 
 var usage = [
-    "IJavascript Notebook",
+    "IJavascript Console/Notebook",
     "",
     "Usage:",
     "",
@@ -53,7 +53,8 @@ var usage = [
     "",
     "The recognised options are:",
     "",
-    "    --help                        show IJavascript and notebook help",
+    "    notebook                      run jupyter notebook instead of console",
+    "    --help                        show IJavascript and console help",
     "    --ijs-debug                   enable debug log level",
     "    --ijs-help                    show IJavascript help",
     "    --ijs-hide-undefined          do not show undefined results",
@@ -69,9 +70,9 @@ var usage = [
     "    --version                     show IJavascript version",
     "    --versions                    show IJavascript and library versions",
     "",
-    "and any other options recognised by the Jupyter notebook; run:",
+    "and any other options recognised by the Jupyter console or notebook; run:",
     "",
-    "    jupyter notebook --help",
+    "    jupyter (console|notebook) --help",
     "",
     "for a full list.",
 ].join("\n");
@@ -175,7 +176,7 @@ function parseCommandArgs(context) {
     ];
     context.args.frontend = [
         "jupyter",
-        "notebook",
+        "console",
     ];
 
     process.argv.slice(2).forEach(function(e) {
@@ -193,6 +194,9 @@ function parseCommandArgs(context) {
         } else if (e === "--ijs-help") {
             console.log(usage);
             process.exit(0);
+
+        } else if (e === "notebook") {
+            context.args.frontend.splice(1, 1, "notebook");
 
         } else if (e === "--ijs-hide-undefined") {
             context.args.kernel.push("--hide-undefined");
@@ -249,6 +253,10 @@ function parseCommandArgs(context) {
             context.args.frontend.push(e);
         }
     });
+
+    if (context.args.frontend[1] == 'console') {
+        context.args.frontend.splice(2, 0, '--kernel=javascript');
+    }
 
     if (context.flag.startup) {
         context.args.kernel.push("--startup-script=" + context.flag.startup);

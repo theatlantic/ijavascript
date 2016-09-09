@@ -63,10 +63,23 @@ notes](http://n-riesco.github.io/ijavascript/doc/install.md.html).
 
 ## Usage
 
-To start an IPython notebook session with the IJavascript kernel, run:
+To use the IJavascript kernel with either the Jupyter console or notebook,
+first run:
+
+```sh
+ijs --ijs-install=global
+```
+
+Then, to use the IJavascript kernel console, run:
 
 ```sh
 ijs
+```
+
+Or, to start an IPython notebook session with the IJavascript kernel, run:
+
+```sh
+ijs notebook
 ```
 
 This command should open the IPython notebook dashboard in your default web
